@@ -123,6 +123,7 @@ app.post('/add-link', (req, res) => {
         res.sendFile(AUDIO_FILE_PATH)
       }
     });
+    res.redirect("/")
   })
 
   app.post('/delete', (req, res) => {
