@@ -106,25 +106,31 @@ app.post('/add-link', (req, res) => {
   });
 
   app.get('/download', (req, res) => {
-    const urlId = req.query.id
-
-    linksList.forEach(link => {
-
-      const AUDIO_FILE_PATH = path.join(__dirname, 'wavs', `${link.title}.wav`)
-
-      if (link.id == urlId && !fs.existsSync(AUDIO_FILE_PATH.slice(0, -4) + '.webm')) {
-
-        
-        const filename = path.basename(AUDIO_FILE_PATH)
-
-        res.setHeader('Content-Disposition', `attachment; filename=${filename}`)
-        res.setHeader('Content-Type', 'audio/wav')
-
-        res.sendFile(AUDIO_FILE_PATH)
+    const urlId = req.query.id;
+    let foundLink = null;
+  
+    // Buscar el enlace correspondiente en la lista de enlaces
+    for (const link of linksList) {
+      if (link.id == urlId && !fs.existsSync(path.join(__dirname, 'wavs', `${link.title}.webm`))) {
+        foundLink = link;
+        break; // Detener el bucle una vez que se encuentra el enlace
       }
-    });
-    res.redirect("/")
-  })
+    }
+  
+    if (foundLink) {
+      const AUDIO_FILE_PATH = path.join(__dirname, 'wavs', `${foundLink.title}.wav`);
+      const filename = path.basename(AUDIO_FILE_PATH);
+  
+      res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+      res.setHeader('Content-Type', 'audio/wav');
+  
+      res.sendFile(AUDIO_FILE_PATH);
+    } else {
+      // Si no se encuentra el enlace o el archivo .webm existe, redirigir
+      res.redirect('/');
+    }
+  });
+  
 
   app.post('/delete', (req, res) => {
     const urlId = req.body.id
