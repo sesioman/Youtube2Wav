@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
 import time
+import sys
+sys.path.insert(0, "/home/pi/.local/lib/python3.9/site-packages")
 import yt_dlp
 import ffmpeg
-import sys
 import os
 
 # Ruta de la carpeta hija

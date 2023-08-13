@@ -78,7 +78,7 @@ app.post('/add-link', (req, res) => {
       });
       let options = {
         mode: 'text',
-        pythonPath: 'C:/Python311/python.exe',
+        pythonPath: '/usr/bin/python3',
         scriptPath: __dirname,
         args: [link,videoTitle]
       };
